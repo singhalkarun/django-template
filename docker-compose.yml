@@ -8,5 +8,19 @@ services:
       - ./src:/home/app/merak
     ports:
       - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+  db:
+    image: postgres:14.7
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - DEBUG=${DEBUG}
+      - POSTGRES_USER=${POSTGRES_DATABASE_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_DATABASE_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE_NAME}
+      - POSTGRES_HOST_AUTH_METHOD=md5
+
+volumes:
+  postgres_data:
